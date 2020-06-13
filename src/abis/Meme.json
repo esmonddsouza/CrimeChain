@@ -13,8 +13,7 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function",
-      "signature": "0x4ed3885e"
+      "type": "function"
     },
     {
       "constant": true,
@@ -28,28 +27,27 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function",
-      "signature": "0x6d4ce63c"
+      "type": "function"
     }
   ],
   "bytecode": "0x608060405234801561001057600080fd5b50610336806100206000396000f3fe60806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680634ed3885e146100515780636d4ce63c14610119575b600080fd5b34801561005d57600080fd5b506101176004803603602081101561007457600080fd5b810190808035906020019064010000000081111561009157600080fd5b8201836020820111156100a357600080fd5b803590602001918460018302840111640100000000831117156100c557600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f8201169050808301925050505050505091929192905050506101a9565b005b34801561012557600080fd5b5061012e6101c3565b6040518080602001828103825283818151815260200191508051906020019080838360005b8381101561016e578082015181840152602081019050610153565b50505050905090810190601f16801561019b5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b80600090805190602001906101bf929190610265565b5050565b606060008054600181600116156101000203166002900480601f01602080910402602001604051908101604052809291908181526020018280546001816001161561010002031660029004801561025b5780601f106102305761010080835404028352916020019161025b565b820191906000526020600020905b81548152906001019060200180831161023e57829003601f168201915b5050505050905090565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106102a657805160ff19168380011785556102d4565b828001600101855582156102d4579182015b828111156102d35782518255916020019190600101906102b8565b5b5090506102e191906102e5565b5090565b61030791905b808211156103035760008160009055506001016102eb565b5090565b9056fea165627a7a723058200fa7c7eee9dea1f928f8511eb17f8376dd8bba7501a5b5967a552b937484c30b0029",
   "deployedBytecode": "0x60806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680634ed3885e146100515780636d4ce63c14610119575b600080fd5b34801561005d57600080fd5b506101176004803603602081101561007457600080fd5b810190808035906020019064010000000081111561009157600080fd5b8201836020820111156100a357600080fd5b803590602001918460018302840111640100000000831117156100c557600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f8201169050808301925050505050505091929192905050506101a9565b005b34801561012557600080fd5b5061012e6101c3565b6040518080602001828103825283818151815260200191508051906020019080838360005b8381101561016e578082015181840152602081019050610153565b50505050905090810190601f16801561019b5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b80600090805190602001906101bf929190610265565b5050565b606060008054600181600116156101000203166002900480601f01602080910402602001604051908101604052809291908181526020018280546001816001161561010002031660029004801561025b5780601f106102305761010080835404028352916020019161025b565b820191906000526020600020905b81548152906001019060200180831161023e57829003601f168201915b5050505050905090565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106102a657805160ff19168380011785556102d4565b828001600101855582156102d4579182015b828111156102d35782518255916020019190600101906102b8565b5b5090506102e191906102e5565b5090565b61030791905b808211156103035760008160009055506001016102eb565b5090565b9056fea165627a7a723058200fa7c7eee9dea1f928f8511eb17f8376dd8bba7501a5b5967a552b937484c30b0029",
-  "sourceMap": "27:207:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;27:207:0;;;;;;;",
-  "deployedSourceMap": "27:207:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;68:78;;8:9:-1;5:2;;;30:1;27;20:12;5:2;68:78:0;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;68:78:0;;;;;;;;;;21:11:-1;8;5:28;2:2;;;46:1;43;36:12;2:2;68:78:0;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;68:78:0;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;68:78:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;93:3;85:6;81:16;74:27;137:4;133:9;126:4;121:3;117:14;113:30;106:37;;169:3;161:6;157:16;147:26;;68:78:0;;;;;;;;;;;;;;;;;;152:79;;8:9:-1;5:2;;;30:1;27;20:12;5:2;152:79:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;152:79:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;68:78;131:9;120:8;:20;;;;;;;;;;;;:::i;:::-;;68:78;:::o;152:79::-;188:13;217:8;210:15;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;152:79;:::o;27:207::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "sourceMap": "27:207:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;27:207:1;;;;;;;",
+  "deployedSourceMap": "27:207:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;68:78;;8:9:-1;5:2;;;30:1;27;20:12;5:2;68:78:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;68:78:1;;;;;;;;;;21:11:-1;8;5:28;2:2;;;46:1;43;36:12;2:2;68:78:1;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;68:78:1;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;68:78:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;93:3;85:6;81:16;74:27;137:4;133:9;126:4;121:3;117:14;113:30;106:37;;169:3;161:6;157:16;147:26;;68:78:1;;;;;;;;;;;;;;;;;;152:79;;8:9:-1;5:2;;;30:1;27;20:12;5:2;152:79:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;152:79:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;68:78;131:9;120:8;:20;;;;;;;;;;;;:::i;:::-;;68:78;:::o;152:79::-;188:13;217:8;210:15;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;152:79;:::o;27:207::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
   "source": "pragma solidity ^0.5.0;\r\n\r\ncontract Meme {\r\n  string memeHash;\r\n\r\n  function set(string memory _memeHash) public {\r\n    memeHash = _memeHash;\r\n  }\r\n\r\n  function get() public view returns (string memory) {\r\n    return memeHash;\r\n  }\r\n}\r\n",
   "sourcePath": "C:/Users/Esmond Dsouza/Desktop/Files/Dissertation Projects/CrimeChain/src/contracts/Meme.sol",
   "ast": {
     "absolutePath": "/C/Users/Esmond Dsouza/Desktop/Files/Dissertation Projects/CrimeChain/src/contracts/Meme.sol",
     "exportedSymbols": {
       "Meme": [
-        22
+        45
       ]
     },
-    "id": 23,
+    "id": 46,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1,
+        "id": 24,
         "literals": [
           "solidity",
           "^",
@@ -57,7 +55,7 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:0"
+        "src": "0:23:1"
       },
       {
         "baseContracts": [],
@@ -65,20 +63,20 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 22,
+        "id": 45,
         "linearizedBaseContracts": [
-          22
+          45
         ],
         "name": "Meme",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 3,
+            "id": 26,
             "name": "memeHash",
             "nodeType": "VariableDeclaration",
-            "scope": 22,
-            "src": "46:15:0",
+            "scope": 45,
+            "src": "46:15:1",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -86,10 +84,10 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 2,
+              "id": 25,
               "name": "string",
               "nodeType": "ElementaryTypeName",
-              "src": "46:6:0",
+              "src": "46:6:1",
               "typeDescriptions": {
                 "typeIdentifier": "t_string_storage_ptr",
                 "typeString": "string"
@@ -100,26 +98,26 @@
           },
           {
             "body": {
-              "id": 12,
+              "id": 35,
               "nodeType": "Block",
-              "src": "113:33:0",
+              "src": "113:33:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10,
+                    "id": 33,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 8,
+                      "id": 31,
                       "name": "memeHash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3,
-                      "src": "120:8:0",
+                      "referencedDeclaration": 26,
+                      "src": "120:8:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage",
                         "typeString": "string storage ref"
@@ -129,47 +127,47 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 9,
+                      "id": 32,
                       "name": "_memeHash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5,
-                      "src": "131:9:0",
+                      "referencedDeclaration": 28,
+                      "src": "131:9:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_memory_ptr",
                         "typeString": "string memory"
                       }
                     },
-                    "src": "120:20:0",
+                    "src": "120:20:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage",
                       "typeString": "string storage ref"
                     }
                   },
-                  "id": 11,
+                  "id": 34,
                   "nodeType": "ExpressionStatement",
-                  "src": "120:20:0"
+                  "src": "120:20:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 13,
+            "id": 36,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "set",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6,
+              "id": 29,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 5,
+                  "id": 28,
                   "name": "_memeHash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 13,
-                  "src": "81:23:0",
+                  "scope": 36,
+                  "src": "81:23:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -177,10 +175,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 4,
+                    "id": 27,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "81:6:0",
+                    "src": "81:6:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -190,71 +188,71 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "80:25:0"
+              "src": "80:25:1"
             },
             "returnParameters": {
-              "id": 7,
+              "id": 30,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "113:0:0"
+              "src": "113:0:1"
             },
-            "scope": 22,
-            "src": "68:78:0",
+            "scope": 45,
+            "src": "68:78:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 20,
+              "id": 43,
               "nodeType": "Block",
-              "src": "203:28:0",
+              "src": "203:28:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18,
+                    "id": 41,
                     "name": "memeHash",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 3,
-                    "src": "217:8:0",
+                    "referencedDeclaration": 26,
+                    "src": "217:8:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage",
                       "typeString": "string storage ref"
                     }
                   },
-                  "functionReturnParameters": 17,
-                  "id": 19,
+                  "functionReturnParameters": 40,
+                  "id": 42,
                   "nodeType": "Return",
-                  "src": "210:15:0"
+                  "src": "210:15:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 21,
+            "id": 44,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "get",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 14,
+              "id": 37,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "164:2:0"
+              "src": "164:2:1"
             },
             "returnParameters": {
-              "id": 17,
+              "id": 40,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 16,
+                  "id": 39,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21,
-                  "src": "188:13:0",
+                  "scope": 44,
+                  "src": "188:13:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -262,10 +260,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 15,
+                    "id": 38,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "188:6:0",
+                    "src": "188:6:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -275,33 +273,33 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "187:15:0"
+              "src": "187:15:1"
             },
-            "scope": 22,
-            "src": "152:79:0",
+            "scope": 45,
+            "src": "152:79:1",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 23,
-        "src": "27:207:0"
+        "scope": 46,
+        "src": "27:207:1"
       }
     ],
-    "src": "0:236:0"
+    "src": "0:236:1"
   },
   "legacyAST": {
     "absolutePath": "/C/Users/Esmond Dsouza/Desktop/Files/Dissertation Projects/CrimeChain/src/contracts/Meme.sol",
     "exportedSymbols": {
       "Meme": [
-        22
+        45
       ]
     },
-    "id": 23,
+    "id": 46,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1,
+        "id": 24,
         "literals": [
           "solidity",
           "^",
@@ -309,7 +307,7 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:0"
+        "src": "0:23:1"
       },
       {
         "baseContracts": [],
@@ -317,20 +315,20 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 22,
+        "id": 45,
         "linearizedBaseContracts": [
-          22
+          45
         ],
         "name": "Meme",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 3,
+            "id": 26,
             "name": "memeHash",
             "nodeType": "VariableDeclaration",
-            "scope": 22,
-            "src": "46:15:0",
+            "scope": 45,
+            "src": "46:15:1",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -338,10 +336,10 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 2,
+              "id": 25,
               "name": "string",
               "nodeType": "ElementaryTypeName",
-              "src": "46:6:0",
+              "src": "46:6:1",
               "typeDescriptions": {
                 "typeIdentifier": "t_string_storage_ptr",
                 "typeString": "string"
@@ -352,26 +350,26 @@
           },
           {
             "body": {
-              "id": 12,
+              "id": 35,
               "nodeType": "Block",
-              "src": "113:33:0",
+              "src": "113:33:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10,
+                    "id": 33,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 8,
+                      "id": 31,
                       "name": "memeHash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3,
-                      "src": "120:8:0",
+                      "referencedDeclaration": 26,
+                      "src": "120:8:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage",
                         "typeString": "string storage ref"
@@ -381,47 +379,47 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 9,
+                      "id": 32,
                       "name": "_memeHash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5,
-                      "src": "131:9:0",
+                      "referencedDeclaration": 28,
+                      "src": "131:9:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_memory_ptr",
                         "typeString": "string memory"
                       }
                     },
-                    "src": "120:20:0",
+                    "src": "120:20:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage",
                       "typeString": "string storage ref"
                     }
                   },
-                  "id": 11,
+                  "id": 34,
                   "nodeType": "ExpressionStatement",
-                  "src": "120:20:0"
+                  "src": "120:20:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 13,
+            "id": 36,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "set",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6,
+              "id": 29,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 5,
+                  "id": 28,
                   "name": "_memeHash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 13,
-                  "src": "81:23:0",
+                  "scope": 36,
+                  "src": "81:23:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -429,10 +427,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 4,
+                    "id": 27,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "81:6:0",
+                    "src": "81:6:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -442,71 +440,71 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "80:25:0"
+              "src": "80:25:1"
             },
             "returnParameters": {
-              "id": 7,
+              "id": 30,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "113:0:0"
+              "src": "113:0:1"
             },
-            "scope": 22,
-            "src": "68:78:0",
+            "scope": 45,
+            "src": "68:78:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 20,
+              "id": 43,
               "nodeType": "Block",
-              "src": "203:28:0",
+              "src": "203:28:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18,
+                    "id": 41,
                     "name": "memeHash",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 3,
-                    "src": "217:8:0",
+                    "referencedDeclaration": 26,
+                    "src": "217:8:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage",
                       "typeString": "string storage ref"
                     }
                   },
-                  "functionReturnParameters": 17,
-                  "id": 19,
+                  "functionReturnParameters": 40,
+                  "id": 42,
                   "nodeType": "Return",
-                  "src": "210:15:0"
+                  "src": "210:15:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 21,
+            "id": 44,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "get",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 14,
+              "id": 37,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "164:2:0"
+              "src": "164:2:1"
             },
             "returnParameters": {
-              "id": 17,
+              "id": 40,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 16,
+                  "id": 39,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21,
-                  "src": "188:13:0",
+                  "scope": 44,
+                  "src": "188:13:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -514,10 +512,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 15,
+                    "id": 38,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "188:6:0",
+                    "src": "188:6:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -527,20 +525,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "187:15:0"
+              "src": "187:15:1"
             },
-            "scope": 22,
-            "src": "152:79:0",
+            "scope": 45,
+            "src": "152:79:1",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 23,
-        "src": "27:207:0"
+        "scope": 46,
+        "src": "27:207:1"
       }
     ],
-    "src": "0:236:0"
+    "src": "0:236:1"
   },
   "compiler": {
     "name": "solc",
@@ -555,7 +553,7 @@
     }
   },
   "schemaVersion": "3.0.2",
-  "updatedAt": "2020-06-12T11:35:55.766Z",
+  "updatedAt": "2020-06-13T10:07:10.956Z",
   "devdoc": {
     "methods": {}
   },
