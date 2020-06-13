@@ -44,6 +44,23 @@ class App extends Component {
         ipfsHash : hash,
         ipfsLink : 'https://ipfs.infura.io/ipfs/' + hash
       })
+      const prevName = await contract.methods.getName().call()
+      this.setState({
+        previousCaseName : prevName
+      })
+      const prevCaseType = await contract.methods.getCaseType().call()
+      this.setState({
+        previousCaseType : prevCaseType
+      })
+      const prevCaseStatus = await contract.methods.getCaseStatus().call()
+      debugger;
+      this.setState({
+        previousCaseStatus : prevCaseStatus
+      })
+      const prevConnectionType = await contract.methods.getCaseConnectionType().call()
+      this.setState({
+        previousConnectionType : prevConnectionType
+      })
     } else {
       window.alert('Smart contract not deployed to detected network.')
     }
@@ -57,8 +74,6 @@ class App extends Component {
       contract: null,
       web3: null,
       buffer: null,
-      buffer2: null,
-      buffer3: null,
       account: null,
       selectedConnectionType: 'Plaintiff',
       selectedCaseStatus: 'New',
@@ -66,6 +81,10 @@ class App extends Component {
       name: '',
       address: '',
       date: '',
+      previousCaseName: '',
+      previousCaseStatus: '',
+      previousConnectionType: '',
+      previousCaseType: ''
     }
   }
 
@@ -82,23 +101,19 @@ class App extends Component {
 
   onSubmit = (event) => {
     event.preventDefault()
+    console.log(this.state)
     console.log("Submitting file to ipfs...")
-    const hash1 = ''
-    const hash2 = ''
-    const hash3 = ''
     ipfs.add(this.state.buffer, (error, result) => {
       console.log('Ipfs result', result)
       if(error) {
         console.error(error)
         return
       }
-
-       this.state.contract.methods.setCase(result[0].hash, this.state.name, this.state.selectedCaseType, this.state.selectedCaseStatus,
-         this.state.selectedConnectionType, this.state.date).send({ from: this.state.account }).then((r) => {
-          debugger;
-          console.log('Logs-->', result.logs[0])
-          return this.setState({ ipfsHash: result[0].hash })
-       })
+      this.state.contract.methods.setCase(result[0].hash, this.state.name, this.state.selectedCaseType, this.state.selectedCaseStatus,
+        this.state.selectedConnectionType, this.state.date).send({ from: this.state.account }).then((r) => {
+        console.log('Logs-->', result.logs[0])
+        return this.setState({ ipfsHash: result[0].hash })
+      })
     })
   }
 
@@ -151,17 +166,11 @@ class App extends Component {
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto">
-                <a href= {this.state.ipfsLink} target="_blank" rel="noopener noreferrer">
-                  IPFS File Hash : {this.state.ipfsHash}
-                </a>
-                <p>&nbsp;</p>
                 <h2>Create New Case</h2>
                 <form onSubmit={this.onSubmit} >
-                  Name: <input type='text' onBlur={this.captureName}/> <br/>
-                  Address: <input type='text' onBlur={this.captureAddress}/> <br/>
+                  Name: <input type='text' onBlur={this.captureName}/> <br/><br/>
+                  Address: <input type='text' onBlur={this.captureAddress}/> <br/><br/>
                   Date: <input type='date' onBlur={this.captureDate}/> <br/><br/>
-                  {/* Victim Id: <input type='number' onBlur={this.captureFile}/> <br/>
-                  Accused Id: <input type='number' onChange={this.captureFile}/> <br/><br/> */}
                   
                   Connection Type: 
                   <RadioGroup name="Conection Type" selectedValue={this.state.selectedConnectionType} onChange={this.onConnectionTypeChange} label="Connection TYpe">
@@ -196,10 +205,22 @@ class App extends Component {
                   </RadioGroup>
                   <br/>
                   
-                  Evidence Files: <br/> <input type='file' onChange={this.captureFile} /><br/>
+                  Evidence Files: &nbsp; <input type='file' onChange={this.captureFile} /><br/>
                   
-                  <br/>
+                  <br/><br/>
                   <input type='submit' />
+                  <br/><br/>
+
+
+                  <b>Previous Case Details</b><br/>
+                  Name: {this.state.previousCaseName} <br/>
+                  Case Type: {this.state.previousCaseType} <br/>
+                  Connection Type: {this.state.previousConnectionType} <br/>
+                  Case Status: {this.state.previousCaseStatus} <br/>
+                  IPFS File Hash: <a href= {this.state.ipfsLink} target="_blank" rel="noopener noreferrer">
+                 {this.state.ipfsHash}
+                </a>
+                <p>&nbsp;</p>
                 </form>
               </div>
             </main>
