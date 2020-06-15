@@ -3,6 +3,8 @@ import Web3 from 'web3';
 import './App.css';
 import Crime from '../abis/CrimeChain.json'
 import {RadioGroup, Radio} from 'react-radio-group'
+import axios from "axios"
+
 
 
 const ipfsClient = require('ipfs-http-client')
@@ -28,6 +30,7 @@ class App extends Component {
     }
   }
 
+
   async loadBlockchainData() {
     const web3 = window.web3
     // Load account
@@ -48,12 +51,15 @@ class App extends Component {
       this.setState({
         previousCaseName : prevName
       })
+      const prevAddress = await contract.methods.getAddress().call()
+      this.setState({
+        previousCaseAddress : prevAddress
+      })
       const prevCaseType = await contract.methods.getCaseType().call()
       this.setState({
         previousCaseType : prevCaseType
       })
       const prevCaseStatus = await contract.methods.getCaseStatus().call()
-      debugger;
       this.setState({
         previousCaseStatus : prevCaseStatus
       })
@@ -82,9 +88,11 @@ class App extends Component {
       address: '',
       date: '',
       previousCaseName: '',
+      previousCaseAddress: '',
       previousCaseStatus: '',
       previousConnectionType: '',
-      previousCaseType: ''
+      previousCaseType: '',
+      secretKey: ''
     }
   }
 
@@ -99,9 +107,27 @@ class App extends Component {
     }
   }
 
-  onSubmit = (event) => {
-    event.preventDefault()
-    console.log(this.state)
+  fetchSecretKey() {
+    console.log('Fetching secret key via SGX Remote Attestation')
+    let sgxData = {}
+		axios({
+			url: 'http://localhost:8000/intel/sgxra/',
+			method: 'GET'
+		}).then((response) => {
+			if(response.status === 200) {
+        sgxData = response.data
+        console.log('Secret Key', sgxData)
+        this.setState({ secretKey: sgxData['secretKey']})
+        this.submitDataToIPFSAndBlockchain();
+      }
+      else{
+        console.log('There was an issue fetching the secret key')
+      }
+    });
+	}
+
+  submitDataToIPFSAndBlockchain(){
+    console.log('Encrypting file..')
     console.log("Submitting file to ipfs...")
     ipfs.add(this.state.buffer, (error, result) => {
       console.log('Ipfs result', result)
@@ -109,12 +135,18 @@ class App extends Component {
         console.error(error)
         return
       }
-      this.state.contract.methods.setCase(result[0].hash, this.state.name, this.state.selectedCaseType, this.state.selectedCaseStatus,
+      this.state.contract.methods.setCase(result[0].hash, this.state.name, this.state.address, this.state.selectedCaseType, this.state.selectedCaseStatus,
         this.state.selectedConnectionType, this.state.date).send({ from: this.state.account }).then((r) => {
         console.log('Logs-->', result.logs[0])
         return this.setState({ ipfsHash: result[0].hash })
       })
     })
+  }
+
+
+  onSubmit = (event) => {
+    event.preventDefault()
+    this.fetchSecretKey()    
   }
 
   onConnectionTypeChange = (event) => {
@@ -214,6 +246,7 @@ class App extends Component {
 
                   <b>Previous Case Details</b><br/>
                   Name: {this.state.previousCaseName} <br/>
+                  Address: {this.state.previousCaseAddress} <br/>
                   Case Type: {this.state.previousCaseType} <br/>
                   Connection Type: {this.state.previousConnectionType} <br/>
                   Case Status: {this.state.previousCaseStatus} <br/>

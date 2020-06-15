@@ -5,6 +5,7 @@ contract CrimeChain {
     struct Case {
         string fileHash;
         string name;
+        string caseAddress;
         string caseType;
         string caseStatus;
         string connectionType;
@@ -13,9 +14,9 @@ contract CrimeChain {
 
     Case newCase;
 
-    function setCase(string memory _fileHash, string memory _name, string memory _caseType, string memory _caseStatus,
+    function setCase(string memory _fileHash, string memory _name, string memory _caseAddress, string memory _caseType, string memory _caseStatus,
         string memory _connectionType, string memory _date) public {
-        newCase = Case(_fileHash, _name, _caseType, _caseStatus, _connectionType, _date);
+        newCase = Case(_fileHash, _name, _caseAddress, _caseType, _caseStatus, _connectionType, _date);
     }
 
     function getCaseHash() public view returns (string memory) {
@@ -36,6 +37,10 @@ contract CrimeChain {
 
     function getCaseConnectionType() public view returns (string memory) {
         return newCase.connectionType;
+    }
+
+    function getAddress() public view returns (string memory) {
+        return newCase.caseAddress;
     }
 
 }
