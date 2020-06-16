@@ -10,7 +10,8 @@ class SGXView(viewsets.ModelViewSet):
     queryset = SGXData.objects.all()
     serializer_class = SGXSerializer
     def list(self, request):
-        ver, key, msg0, msg1, msg2, msg3, msg4 = remoteAttestation()
+        data = request.data
+        ver, key, msg0, msg1, msg2, msg3, msg4 = remoteAttestation(data)
         sgxModel = SGXData(verified=ver, secretKey=key, msg0=msg0, msg1=msg1, msg2=msg2, msg3=msg3, msg4=msg4)
         json_content = self.serializer_class(sgxModel, many=False)
         return Response(json_content.data, status=200)
