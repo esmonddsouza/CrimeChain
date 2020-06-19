@@ -92,7 +92,6 @@ class App extends Component {
       previousCaseStatus: '',
       previousConnectionType: '',
       previousCaseType: '',
-      secretKey: ''
     }
   }
 
@@ -112,19 +111,40 @@ class App extends Component {
     let sgxData = {}
 		axios({
 			url: 'http://localhost:8000/intel/sgxra/',
-			method: 'GET'
+      method: 'GET',
+      body: {
+        data: this.state.buffer
+      }
 		}).then((response) => {
 			if(response.status === 200) {
         sgxData = response.data
-        console.log('Secret Key', sgxData)
-        this.setState({ secretKey: sgxData['secretKey']})
+        console.log('Data ', sgxData)
         this.submitDataToIPFSAndBlockchain();
       }
       else{
-        console.log('There was an issue fetching the secret key')
+        console.log('There was an issue encrypting the data')
       }
     });
-	}
+  }
+  
+  // fetchSecretKey() {
+  //   console.log('Fetching secret key via SGX Remote Attestation')
+  //   let sgxData = {}
+  //   const data = {
+  //     data: this.state.buffer
+  //   };
+	// 	axios.get('http://localhost:8000/intel/sgxra/', { data })
+  //     .then((response) => {
+	// 		if(response.status === 200) {
+  //       sgxData = response.data
+  //       console.log('Data ', sgxData)
+  //       this.submitDataToIPFSAndBlockchain();
+  //     }
+  //     else{
+  //       console.log('There was an issue encrypting the data')
+  //     }
+  //   });
+	// }
 
   submitDataToIPFSAndBlockchain(){
     console.log('Encrypting file..')
@@ -245,7 +265,7 @@ class App extends Component {
 
 
                   <b>Previous Case Details</b><br/>
-                  Name: {this.state.previousCaseName} <br/>
+                  Name: {this.state.previousCaseName} &nbsp; &nbsp; <br/>
                   Address: {this.state.previousCaseAddress} <br/>
                   Case Type: {this.state.previousCaseType} <br/>
                   Connection Type: {this.state.previousConnectionType} <br/>
@@ -253,7 +273,6 @@ class App extends Component {
                   IPFS File Hash: <a href= {this.state.ipfsLink} target="_blank" rel="noopener noreferrer">
                  {this.state.ipfsHash}
                 </a>
-                <p>&nbsp;</p>
                 </form>
               </div>
             </main>

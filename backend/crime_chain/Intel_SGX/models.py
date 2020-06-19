@@ -4,7 +4,7 @@ from django.db import models
 class SGXData(models.Model):
     """Intel SGX Verification Data"""
     verified = models.BooleanField(default=False)
-    secretKey = models.CharField(max_length=256)
+    data = models.CharField(max_length=25600)
     msg0 = models.CharField(max_length=256)
     msg1 = models.CharField(max_length=256)
     msg2 = models.CharField(max_length=256)

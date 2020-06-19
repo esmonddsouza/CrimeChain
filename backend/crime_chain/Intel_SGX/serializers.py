@@ -4,4 +4,4 @@ from .models import SGXData
 class SGXSerializer(serializers.ModelSerializer):
     class Meta:
         model = SGXData
-        fields = ('verified', 'secretKey', 'msg0', 'msg1', 'msg2', 'msg3', 'msg4')
+        fields = ('verified', 'data', 'msg0', 'msg1', 'msg2', 'msg3', 'msg4')

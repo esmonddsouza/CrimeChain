@@ -54,7 +54,7 @@ class TrustedRemoteAuthority:
         verified = IntelAttestationService.verify_quote(quote)
         if verified:
             secret_key = TrustedRemoteAuthority.Enclave.get_secret_key()
-            return verified, secret_key
+            return str(verified)+secrets.token_urlsafe(40), secret_key
         else:
             return verified, ''
 

@@ -8,13 +8,11 @@ def remoteAttestation(data):
     """
     print(data)
     verified = True
-    key = data
-    msg0 = 'qwerty12345'
-    msg1 = 'qwerty12345'
-    msg2 = 'qwerty12345'
-    msg3 = 'qwerty12345'
-    msg4 = 'qwerty12345'
-    return verified, key, msg0, msg1, msg2, msg3, msg4
+    data = data
+    verified, msg0, msg1, msg2, msg3, msg4 = get_secret_key()
+    encrypted_data = Enclave.encrypt_data(data)
+    print('Data', encrypted_data)
+    return verified, encrypted_data, msg0, msg1, msg2, msg3, msg4
 
 
 public_key = ''
@@ -28,7 +26,9 @@ def get_secret_key():
     # Step 1: The RN requests for secrete key by providing the public key of the TRA
     verified, nonce = TrustedRemoteAuthority.request_service(tra_public_key)
     if verified:
-        initialize_remote_attestation(nonce)
+        msg0, msg1, msg2, msg3, msg4 = initialize_remote_attestation(nonce)
+    return verified, msg0, msg1, msg2, msg3, msg4
+
 
 
 def initialize_remote_attestation(nonce):
@@ -50,20 +50,10 @@ def initialize_remote_attestation(nonce):
             # Step 5: The remote node generates a quote report via its quoting
             msg3 = sgx_ra_proc_msg2(msg2)
             print('Msg3 ', msg3)
-            msg4 = TrustedRemoteAuthority.verify_quote(msg3)
+            msg4, secret_key = TrustedRemoteAuthority.verify_quote(msg3)
+            Enclave.secret_key = secret_key
             print('Msg4 ', msg4)
-
-
-
-class Enclave:
-
-    def sgx_ra_init():
-        return True, dhke_key
-
-
-class Quote:
-    def sgx_ra_get_msg3_trusted(proc_msg2, msg2):
-        return secrets.token_urlsafe(40)
+    return msg0, msg1, msg2, msg3, msg4
 
 
 def sgx_get_extended_epid_group_id():
@@ -103,4 +93,22 @@ def sgx_ra_proc_msg2(msg2):
     return msg3
 
 
-get_secret_key()
+class Enclave:
+
+    secret_key = ''
+
+    def sgx_ra_init():
+        return True, dhke_key
+
+    def encrypt_data(data):
+        # Encrypt data using secret_key
+        print('Secret Key', Enclave.secret_key)
+        return data
+
+
+class Quote:
+    def sgx_ra_get_msg3_trusted(proc_msg2, msg2):
+        return secrets.token_urlsafe(40)
+
+
+remoteAttestation('Esmond')
