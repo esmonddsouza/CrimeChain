@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import './App.css';
 import Crime from '../abis/CrimeChain.json'
+import RBAC from '../abis/RBAC.json'
 import {RadioGroup, Radio} from 'react-radio-group'
 import axios from "axios"
 
@@ -38,9 +39,16 @@ class App extends Component {
     console.log('Accounts -->', accounts)
     this.setState({ account: accounts[0] })
     const networkId = await web3.eth.net.getId()
-    const networkData = Crime.networks[networkId]
-    if(networkData) {
-      const contract = web3.eth.Contract(Crime.abi, networkData.address)
+    const crimeNetworkData = Crime.networks[networkId]
+    const rbacNetworkData = RBAC.networks[networkId]
+    if(crimeNetworkData && rbacNetworkData) {
+      const rbacContract = web3.eth.Contract(RBAC.abi, rbacNetworkData.address)
+      const accountAllowed = await rbacContract.methods.hasRole(accounts[0], 0).call()
+      this.setState({ 
+        allowed: accountAllowed
+      })
+      console.log(this.state.allowed)
+      const contract = web3.eth.Contract(Crime.abi, crimeNetworkData.address)
       this.setState({ contract })
       const hash = await contract.methods.getCaseHash().call()
       this.setState({ 
@@ -92,10 +100,12 @@ class App extends Component {
       previousCaseStatus: '',
       previousConnectionType: '',
       previousCaseType: '',
+      allowed: false
     }
   }
 
   captureFile = (event) => {
+    console.log(this.state)
     event.preventDefault()
     const file = event.target.files[0]
     const reader = new window.FileReader()
