@@ -2,81 +2,79 @@ pragma solidity ^0.5.0;
 
 
 contract RBAC {
+
   event RoleCreated(uint256 role);
   event BearerAdded(address account, uint256 role);
   event BearerRemoved(address account, uint256 role);
-  uint256 constant NO_ROLE = 0;
+  string constant NO_ROLE = '0x9D2AD0Ea4F0Cf2895E7669c79d5a928D0731d671';
   
+
   struct Role {
     string description;
-    uint256 admin;
+    string account;
     mapping (address => bool) bearers;
   }
   
 
   Role[] public roles;
   constructor() public {
-    addRootRole("NO_ROLE");
+    addRootRole("0x9D2AD0Ea4F0Cf2895E7669c79d5a928D0731d671");
+    addRole("RW", "0x9D2AD0Ea4F0Cf2895E7669c79d5a928D0731d671");
+    addRole("RW", "0x7f6F61920b498D034810721EbfD9289d902473c6");
   }
   
-  function addRootRole(string memory _roleDescription) public returns(uint256)
-  {
-    uint256 role = addRole(_roleDescription, roles.length);
-    roles[role].bearers[msg.sender] = true;
-    emit BearerAdded(msg.sender, role);
-  }
-  
-  function addRole(string memory _roleDescription, uint256 _admin) public returns(uint256) {
-    require(_admin <= roles.length, "Admin role doesn't exist.");
-    uint256 role = roles.push(
+
+  function addRootRole(string memory _account) public returns(uint256){
+    uint256  role = roles.push(
       Role({
-        description: _roleDescription,
-        admin: _admin
+        description: "ADMIN",
+        account: _account
       })
     ) - 1;
-    emit RoleCreated(role);
+    return role;
+  }
+
+
+  function addRole(string memory _role, string memory _account) public returns(uint256) {
+    uint256 role = 0;
+    if(checkIfAdmin(_account)){
+      role = roles.push(
+        Role({
+          description: _role,
+          account: _account
+        })
+      ) - 1;
+    }
     return role;
   }
   
+
   function totalRoles() public view returns(uint256) {
     return roles.length - 1;
   }
+
   
-  function hasRole(address _account, uint256 _role) public view returns(bool) {
-    return _role < roles.length && roles[_role].bearers[_account];
+  function hasRole(string memory _account, string memory _role) public view returns(bool) {
+    bool hasParticularRole = false;
+    for(uint256 i=0; i<roles.length; i++){
+      if (keccak256(bytes(roles[i].description)) == keccak256(bytes(_role)) && keccak256(bytes(roles[i].account)) == keccak256(bytes(_account))){
+        hasParticularRole = true;
+        break;
+      }
+    }
+    return hasParticularRole;
   }
-  
-  function addBearer(address _account, uint256 _role) public {
-    require(
-      _role < roles.length,
-      "Role doesn't exist."
-    );
-    require(
-      hasRole(msg.sender, roles[_role].admin),
-      "User can't add bearers."
-    );
-    require(
-      !hasRole(_account, _role),
-      "Account is bearer of role."
-    );
-    roles[_role].bearers[_account] = true;
-    emit BearerAdded(_account, _role);
+
+
+  function checkIfAdmin(string memory _account) public view returns (bool) {
+    bool isAdmin = false;
+    for(uint256 i=0; i<roles.length; i++){
+      if (keccak256(bytes(roles[i].description)) == keccak256(bytes("ADMIN")) && keccak256(bytes(roles[i].account)) == keccak256(bytes(_account))){
+        isAdmin = true;
+        break;
+      }
+    }
+    return isAdmin;
   }
-  
-  function removeBearer(address _account, uint256 _role) public {
-    require(
-      _role < roles.length,
-      "Role doesn't exist."
-    );
-    require(
-      hasRole(msg.sender, roles[_role].admin),
-      "User can't remove bearers."
-    );
-    require(
-      hasRole(_account, _role),
-      "Account is not bearer of role."
-    );
-    delete roles[_role].bearers[_account];
-    emit BearerRemoved(_account, _role);
-  }
+
 }
