@@ -1,50 +1,30 @@
 pragma solidity ^0.5.0;
-
+pragma experimental ABIEncoderV2;
 
 contract RBAC {
-
-  event RoleCreated(uint256 role);
-  event BearerAdded(address account, uint256 role);
-  event BearerRemoved(address account, uint256 role);
-  string constant NO_ROLE = '0x9D2AD0Ea4F0Cf2895E7669c79d5a928D0731d671';
-  
 
   struct Role {
     string description;
     string account;
-    mapping (address => bool) bearers;
   }
   
 
   Role[] public roles;
   constructor() public {
-    addRootRole("0x9D2AD0Ea4F0Cf2895E7669c79d5a928D0731d671");
+    addRole("ADMIN", "0x9D2AD0Ea4F0Cf2895E7669c79d5a928D0731d671");
     addRole("RW", "0x9D2AD0Ea4F0Cf2895E7669c79d5a928D0731d671");
     addRole("RW", "0x7f6F61920b498D034810721EbfD9289d902473c6");
-  }
-  
-
-  function addRootRole(string memory _account) public returns(uint256){
-    uint256  role = roles.push(
-      Role({
-        description: "ADMIN",
-        account: _account
-      })
-    ) - 1;
-    return role;
   }
 
 
   function addRole(string memory _role, string memory _account) public returns(uint256) {
     uint256 role = 0;
-    if(checkIfAdmin(_account)){
       role = roles.push(
         Role({
           description: _role,
           account: _account
         })
       ) - 1;
-    }
     return role;
   }
   
@@ -75,6 +55,16 @@ contract RBAC {
       }
     }
     return isAdmin;
+  }
+
+  function getAllRoles() public view returns (string[] memory, string[] memory)  {
+    string[] memory accounts = new string[](roles.length);
+    string[] memory accountRoles = new string[](roles.length);
+    for (uint256 i = 0; i < roles.length; i++) {
+        accounts[i] = roles[i].account;
+        accountRoles[i] = roles[i].description;
+    }
+    return (accounts, accountRoles);
   }
 
 }
