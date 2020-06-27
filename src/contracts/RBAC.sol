@@ -57,6 +57,7 @@ contract RBAC {
     return isAdmin;
   }
 
+
   function getAllRoles() public view returns (string[] memory, string[] memory)  {
     string[] memory accounts = new string[](roles.length);
     string[] memory accountRoles = new string[](roles.length);
@@ -65,6 +66,18 @@ contract RBAC {
         accountRoles[i] = roles[i].description;
     }
     return (accounts, accountRoles);
+  }  
+  
+
+  function removeRole(uint index) public returns(bool) {
+    bool roleRemoved = false;
+    for (uint i = index; i<roles.length-1; i++){
+        roles[i] = roles[i+1];
+    }
+    delete roles[roles.length-1];
+    roles.length--;
+    roleRemoved = true;
+    return roleRemoved;
   }
 
 }
