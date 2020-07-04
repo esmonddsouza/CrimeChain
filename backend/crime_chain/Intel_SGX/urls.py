@@ -5,11 +5,9 @@ URLs to access djangos APIs
 
 from django.urls import path, include
 from rest_framework import routers
-from .views import SGXView
+from .views import SGXRAView
 
-router = routers.DefaultRouter()
-router.register('sgxra', SGXView)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('sgx/ra', SGXRAView.as_view(), name="RA")
 ]

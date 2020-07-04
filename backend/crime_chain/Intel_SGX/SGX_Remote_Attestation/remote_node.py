@@ -1,18 +1,22 @@
 from .trusted_remote_authority import TrustedRemoteAuthority
 import secrets
+import pyaes, pbkdf2, binascii, os, secrets
+import ast
 
 
-def remoteAttestation(data):
-    """
-    predicts pollution data
-    """
-    print(data)
-    verified = True
-    data = data
+def remoteAttestation(data, iv, encrypt):
+    print('OG Data-->', data)
     verified, msg0, msg1, msg2, msg3, msg4 = get_secret_key()
-    encrypted_data = Enclave.encrypt_data(data)
-    print('Data', encrypted_data)
-    return verified, encrypted_data, msg0, msg1, msg2, msg3, msg4
+    if encrypt:
+        encrypted_data, iv = Enclave.encrypt_data(data)
+        print('Encrypted Data-->', encrypted_data)
+        return verified, encrypted_data, iv
+    else: 
+        decrypted_data = Enclave.decrypt_data(binascii.unhexlify(data), iv)
+        print('Decrypted Data-->', decrypted_data)
+        return verified, ast.literal_eval(decrypted_data.decode("utf-8")), iv
+
+
 
 
 public_key = ''
@@ -100,15 +104,23 @@ class Enclave:
     def sgx_ra_init():
         return True, dhke_key
 
-    def encrypt_data(data):
-        # Encrypt data using secret_key
-        print('Secret Key', Enclave.secret_key)
-        return data
+    def encrypt_data(plaintext):
+        print('AES encryption key:', Enclave.secret_key)
+        iv = secrets.randbits(256)
+        aes = pyaes.AESModeOfOperationCTR(Enclave.secret_key, pyaes.Counter(iv))
+        ciphertext = aes.encrypt(plaintext)
+        #print('Encrypted:', binascii.hexlify(ciphertext))
+        return binascii.hexlify(ciphertext), iv
+
+
+    def decrypt_data(ciphertext, iv):
+        aes = pyaes.AESModeOfOperationCTR(Enclave.secret_key, pyaes.Counter(iv))
+        plaintext = aes.decrypt(ciphertext)
+        #print('Decrypted:', plaintext.decode("utf-8"))
+        return plaintext
 
 
 class Quote:
     def sgx_ra_get_msg3_trusted(proc_msg2, msg2):
         return secrets.token_urlsafe(40)
 
-
-remoteAttestation('Esmond')

@@ -11,4 +11,9 @@ class SGXData(models.Model):
     msg3 = models.CharField(max_length=256)
     msg4 = models.CharField(max_length=256)
 
+class RemoteAttestationData(models.Model):
+    """Intel SGX Remote Attestation Data"""
+    verified = models.BooleanField(default=False)
+    data = models.CharField(max_length=25600)
+
     

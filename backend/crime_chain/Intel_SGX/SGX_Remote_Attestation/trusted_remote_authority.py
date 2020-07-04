@@ -62,4 +62,4 @@ class TrustedRemoteAuthority:
     class Enclave:
 
         def get_secret_key():
-            return 'ipZqWnISXYgZGO8Lz1r3hOXXjnntMC14YxGsmHkNZ5lPQECb3J7JSg'
+            return b'\xe7gz\xd9\x1b\x125\xf5@p\xad\x9bcW\xdc\x0e.\x87Z=\xdc5\xd3\x84\xb8\x95\xf3\x13\xc3S\xf1\xac'

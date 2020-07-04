@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 import Crime from '../../abis/CrimeChain.json'
 import RBAC from '../../abis/RBAC.json'
 import {RadioGroup, Radio} from 'react-radio-group'
-import axios from "axios"
 import { Link } from 'react-router-dom';
 
 
@@ -37,8 +36,9 @@ class Dashboard extends Component {
     const web3 = window.web3
     // Load account
     const accounts = await web3.eth.getAccounts()
-    console.log('Accounts -->', accounts)
-    this.setState({ account: accounts[0] })
+    this.setState({ 
+      account: accounts[0]
+    })
     const networkId = await web3.eth.net.getId()
     const crimeNetworkData = Crime.networks[networkId]
     const rbacNetworkData = RBAC.networks[networkId]
@@ -75,7 +75,7 @@ class Dashboard extends Component {
       const prevConnectionType = await contract.methods.getCaseConnectionType().call()
       this.setState({
         previousConnectionType : prevConnectionType
-      })
+      }) 
     } else {
       window.alert('Smart contract not deployed to detected network.')
     }
@@ -101,14 +101,21 @@ class Dashboard extends Component {
       previousCaseStatus: '',
       previousConnectionType: '',
       previousCaseType: '',
-      allowed: false
+      previousIv: '',
+      allowed: false,
+      iv: '',
+      encryptedData: ''
     }
+    this.encryptData = this.encryptData.bind(this)
+    this.fetchFile = this.fetchFile.bind(this)
+    this.decryptData = this.decryptData.bind(this)
   }
 
   captureFile = (event) => {
     console.log(this.state)
     event.preventDefault()
     const file = event.target.files[0]
+    console.log('File-->', file)
     const reader = new window.FileReader()
     reader.readAsArrayBuffer(file)
     reader.onloadend = () => {
@@ -116,52 +123,91 @@ class Dashboard extends Component {
       console.log('buffer', this.state.buffer)
     }
   }
-
-  fetchSecretKey() {
-    console.log('Fetching secret key via SGX Remote Attestation')
-    let sgxData = {}
-		axios({
-			url: 'http://localhost:8000/intel/sgxra/',
-      method: 'GET',
-      body: {
-        data: this.state.buffer
-      }
-		}).then((response) => {
-			if(response.status === 200) {
-        sgxData = response.data
-        console.log('Data ', sgxData)
-        this.submitDataToIPFSAndBlockchain();
-      }
-      else{
-        console.log('There was an issue encrypting the data')
-      }
-    });
-  }
   
-  // fetchSecretKey() {
-  //   console.log('Fetching secret key via SGX Remote Attestation')
-  //   let sgxData = {}
-  //   const data = {
-  //     data: this.state.buffer
-  //   };
-	// 	axios.get('http://localhost:8000/intel/sgxra/', { data })
-  //     .then((response) => {
-	// 		if(response.status === 200) {
-  //       sgxData = response.data
-  //       console.log('Data ', sgxData)
-  //       this.submitDataToIPFSAndBlockchain();
-  //     }
-  //     else{
-  //       console.log('There was an issue encrypting the data')
-  //     }
-  //   });
-	// }
+  encryptData() {
+    console.log('Encrypting file..')
+    const data = {
+        "data": this.state.buffer,
+        "iv": 0,
+        "encrypt": true
+    }
+    console.log(JSON.stringify(data))
+    fetch('http://localhost:8000/intel/sgx/ra', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        return response.json();
+      }
+    })
+    .then(response => {
+        if(response){  
+          const data = response['data']['data'] + '&&&&&' +  response['iv'];
+          this.setState({
+            buffer : Buffer.from(data, "utf-8"),
+          })
+          this.submitDataToIPFSAndBlockchain()
+        }
+    })
+  }
+
+  fetchFile() {
+    console.log('Fetching  file..')
+    console.log(this.state.ipfsHash)
+    ipfs.get(this.state.ipfsHash, (error, result) => {
+      console.log('Ipfs result-->', result)
+      if(error) {
+        console.error(error)
+        return
+      }
+      console.log('Content-->', result[0].content);
+      this.setState({
+        encryptedData : result[0].content.toString('utf8').split('&&&&&')[0],
+        iv : result[0].content.toString('utf8').split('&&&&&')[1]
+      })
+      this.decryptData()
+    })
+  }
+
+  decryptData() {
+    const data = {
+      "data": this.state.encryptedData,
+      "iv": this.state.iv,
+      "encrypt": false
+    }
+    console.log('Decrypting  file..')
+    fetch('http://localhost:8000/intel/sgx/ra', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        return response.json();
+      }
+    })
+    .then(response => {
+        if(response){ 
+          console.log(response);
+          const data = response['data']
+          console.log(data)
+          const buf = Buffer.from(data); 
+          console.log(buf)
+        }
+    })
+  }
 
   submitDataToIPFSAndBlockchain(){
-    console.log('Encrypting file..')
+    console.log(this.state.buffer)
     console.log("Submitting file to ipfs...")
     ipfs.add(this.state.buffer, (error, result) => {
-      console.log('Ipfs result', result)
+      console.log('Ipfs result-->', result)
       if(error) {
         console.error(error)
         return
@@ -177,7 +223,7 @@ class Dashboard extends Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.fetchSecretKey()    
+    this.encryptData()    
   }
 
   onConnectionTypeChange = (event) => {
@@ -234,7 +280,7 @@ class Dashboard extends Component {
             <div className="row">
               <main role="main" className="col-lg-12 d-flex text-center">
                 <div className="content mr-auto ml-auto">
-                  <h2>Create New Case</h2><br/>
+                  <h2>Create New Case</h2>
                   <form onSubmit={this.onSubmit} >
                     Name: <input type='text' onBlur={this.captureName}/> <br/><br/>
                     Address: <input type='text' onBlur={this.captureAddress}/> <br/><br/>
@@ -275,12 +321,11 @@ class Dashboard extends Component {
                     
                     Evidence Files: &nbsp; <input type='file' onChange={this.captureFile} /><br/>
                     
-                    <br/><br/>
+                    <br/>
                     <input type='submit' />
                     <br/><br/>
   
-  
-                    <b>Previous Case Details</b><br/>
+                    <h2>Previous Case Details</h2>
                     Name: {this.state.previousCaseName} &nbsp; &nbsp; <br/>
                     Address: {this.state.previousCaseAddress} <br/>
                     Case Type: {this.state.previousCaseType} <br/>
@@ -289,6 +334,8 @@ class Dashboard extends Component {
                     IPFS File Hash: <a href= {this.state.ipfsLink} target="_blank" rel="noopener noreferrer">
                    {this.state.ipfsHash}
                   </a>
+                  <br/>        
+                  <input type='button' value="Decrypt File" onClick={this.fetchFile}/>
                   </form>
                 </div>
               </main>

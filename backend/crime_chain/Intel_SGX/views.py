@@ -1,17 +1,19 @@
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import viewsets
-from .serializers import SGXSerializer
-from .models import SGXData
 from .SGX_Remote_Attestation.remote_node import remoteAttestation
+from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 
-
-class SGXView(viewsets.ModelViewSet):
-    queryset = SGXData.objects.all()
-    serializer_class = SGXSerializer
-    def list(self, request):
-        data = request.data
-        ver, data, msg0, msg1, msg2, msg3, msg4 = remoteAttestation(data)
-        sgxModel = SGXData(verified=ver, data=data, msg0=msg0, msg1=msg1, msg2=msg2, msg3=msg3, msg4=msg4)
-        json_content = self.serializer_class(sgxModel, many=False)
-        return Response(json_content.data, status=200)
+class SGXRAView(APIView):
+    def post(self, request):
+        encrypt = request.data["encrypt"]
+        if encrypt:
+            data = request.data["data"]["data"]
+        else:
+            data = request.data["data"]
+        iv = request.data["iv"]
+        ver, data, iv = remoteAttestation(str(data), int(iv), encrypt)
+        buffer_data = {'type': 'Buffer', 'data': data}
+        response = Response({'data': buffer_data, 'verified': ver, 'iv': str(iv)}, status=200)
+        return response
