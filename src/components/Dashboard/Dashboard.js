@@ -204,7 +204,7 @@ class Dashboard extends Component {
             decryptedData : buf
           })
           console.log(buf) 
-          console.log("Downlaoding File...")
+          console.log("Downloading File...")
           var file = new File([buf.toString('binary')], this.state.previousFileName)
           console.log('File-->', file)
           let url = window.URL.createObjectURL(file)
