@@ -104,7 +104,10 @@ class Dashboard extends Component {
       previousIv: '',
       allowed: false,
       iv: '',
-      encryptedData: ''
+      encryptedData: '',
+      decryptedData: '',
+      fileName: '',
+      previousFileName: ''
     }
     this.encryptData = this.encryptData.bind(this)
     this.fetchFile = this.fetchFile.bind(this)
@@ -112,26 +115,28 @@ class Dashboard extends Component {
   }
 
   captureFile = (event) => {
-    console.log(this.state)
     event.preventDefault()
     const file = event.target.files[0]
     console.log('File-->', file)
     const reader = new window.FileReader()
-    reader.readAsArrayBuffer(file)
+    reader.readAsBinaryString(file)
     reader.onloadend = () => {
-      this.setState({ buffer: Buffer(reader.result) })
+      this.setState({ 
+        buffer: Buffer(reader.result),
+        fileName: file.name
+      })
       console.log('buffer', this.state.buffer)
+      console.log(this.state)
     }
   }
   
   encryptData() {
-    console.log('Encrypting file..')
+    console.log('Encrypting file...')
     const data = {
         "data": this.state.buffer,
         "iv": 0,
         "encrypt": true
     }
-    console.log(JSON.stringify(data))
     fetch('http://localhost:8000/intel/sgx/ra', {
     method: 'POST',
     body: JSON.stringify(data),
@@ -146,7 +151,7 @@ class Dashboard extends Component {
     })
     .then(response => {
         if(response){  
-          const data = response['data']['data'] + '&&&&&' +  response['iv'];
+          const data = response['data']['data'] + '&&&&&' +  response['iv'] + '&&&&&' + this.state.fileName; 
           this.setState({
             buffer : Buffer.from(data, "utf-8"),
           })
@@ -157,9 +162,7 @@ class Dashboard extends Component {
 
   fetchFile() {
     console.log('Fetching  file..')
-    console.log(this.state.ipfsHash)
     ipfs.get(this.state.ipfsHash, (error, result) => {
-      console.log('Ipfs result-->', result)
       if(error) {
         console.error(error)
         return
@@ -167,7 +170,8 @@ class Dashboard extends Component {
       console.log('Content-->', result[0].content);
       this.setState({
         encryptedData : result[0].content.toString('utf8').split('&&&&&')[0],
-        iv : result[0].content.toString('utf8').split('&&&&&')[1]
+        iv : result[0].content.toString('utf8').split('&&&&&')[1],
+        previousFileName : result[0].content.toString('utf8').split('&&&&&')[2]
       })
       this.decryptData()
     })
@@ -179,7 +183,7 @@ class Dashboard extends Component {
       "iv": this.state.iv,
       "encrypt": false
     }
-    console.log('Decrypting  file..')
+    console.log('Decrypting  file...')
     fetch('http://localhost:8000/intel/sgx/ra', {
     method: 'POST',
     body: JSON.stringify(data),
@@ -194,13 +198,23 @@ class Dashboard extends Component {
     })
     .then(response => {
         if(response){ 
-          console.log(response);
           const data = response['data']
-          console.log(data)
           const buf = Buffer.from(data); 
-          console.log(buf)
+          this.setState({
+            decryptedData : buf
+          })
+          console.log(buf) 
+          console.log("Downlaoding File...")
+          var file = new File([buf.toString('binary')], this.state.previousFileName)
+          console.log('File-->', file)
+          let url = window.URL.createObjectURL(file)
+					let a = document.createElement('a');
+					a.href = url;
+					a.download = this.state.previousFileName;
+					a.click();
         }
     })
+    
   }
 
   submitDataToIPFSAndBlockchain(){
@@ -332,10 +346,11 @@ class Dashboard extends Component {
                     Connection Type: {this.state.previousConnectionType} <br/>
                     Case Status: {this.state.previousCaseStatus} <br/>
                     IPFS File Hash: <a href= {this.state.ipfsLink} target="_blank" rel="noopener noreferrer">
-                   {this.state.ipfsHash}
+                    {this.state.ipfsHash}
                   </a>
-                  <br/>        
-                  <input type='button' value="Decrypt File" onClick={this.fetchFile}/>
+                  <br/>
+                    <input type='button' value="Decrypt File" onClick={this.fetchFile}/>
+                  
                   </form>
                 </div>
               </main>
