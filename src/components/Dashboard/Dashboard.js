@@ -119,7 +119,7 @@ class Dashboard extends Component {
     const file = event.target.files[0]
     console.log('File-->', file)
     const reader = new window.FileReader()
-    reader.readAsBinaryString(file)
+    reader.readAsArrayBuffer(file)
     reader.onloadend = () => {
       this.setState({ 
         buffer: Buffer(reader.result),
@@ -205,7 +205,8 @@ class Dashboard extends Component {
           })
           console.log(buf) 
           console.log("Downloading File...")
-          var file = new File([buf.toString('binary')], this.state.previousFileName)
+          // buf.toString('binary')
+          var file = new File([buf], this.state.previousFileName)
           console.log('File-->', file)
           let url = window.URL.createObjectURL(file)
 					let a = document.createElement('a');
