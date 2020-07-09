@@ -228,7 +228,7 @@ class Dashboard extends Component {
         return
       }
       this.state.contract.methods.setCase(result[0].hash, this.state.name, this.state.address, this.state.selectedCaseType, this.state.selectedCaseStatus,
-        this.state.selectedConnectionType, this.state.date).send({ from: this.state.account }).then((r) => {
+        this.state.selectedConnectionType).send({ from: this.state.account }).then((r) => {
         console.log('Logs-->', result.logs[0])
         return this.setState({ ipfsHash: result[0].hash })
       })
