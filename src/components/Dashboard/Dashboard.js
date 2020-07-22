@@ -126,7 +126,7 @@ class Dashboard extends Component {
         fileName: file.name
       })
       console.log('buffer', this.state.buffer)
-      console.log(this.state)
+      //console.log(this.state)
     }
   }
   
@@ -198,6 +198,7 @@ class Dashboard extends Component {
     })
     .then(response => {
         if(response){ 
+          console.log(response)
           const data = response['data']
           const buf = Buffer.from(data); 
           this.setState({
@@ -228,7 +229,7 @@ class Dashboard extends Component {
         return
       }
       this.state.contract.methods.setCase(result[0].hash, this.state.name, this.state.address, this.state.selectedCaseType, this.state.selectedCaseStatus,
-        this.state.selectedConnectionType).send({ from: this.state.account }).then((r) => {
+        this.state.selectedConnectionType, '').send({ from: this.state.account }).then((r) => {
         console.log('Logs-->', result.logs[0])
         return this.setState({ ipfsHash: result[0].hash })
       })
@@ -299,7 +300,7 @@ class Dashboard extends Component {
                   <form onSubmit={this.onSubmit} >
                     Name: <input type='text' onBlur={this.captureName}/> <br/><br/>
                     Address: <input type='text' onBlur={this.captureAddress}/> <br/><br/>
-                    Date: <input type='date' onBlur={this.captureDate}/> <br/><br/>
+                    {/* Date: <input type='date' onBlur={this.captureDate}/> <br/><br/> */}
                     
                     Connection Type: 
                     <RadioGroup name="Conection Type" selectedValue={this.state.selectedConnectionType} onChange={this.onConnectionTypeChange} label="Connection TYpe">
@@ -349,7 +350,7 @@ class Dashboard extends Component {
                     IPFS File Hash: <a href= {this.state.ipfsLink} target="_blank" rel="noopener noreferrer">
                     {this.state.ipfsHash}
                   </a>
-                  <br/>
+                  <br/><br/>
                     <input type='button' value="Decrypt File" onClick={this.fetchFile}/>
                   
                   </form>

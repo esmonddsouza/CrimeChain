@@ -2,19 +2,26 @@ from .trusted_remote_authority import TrustedRemoteAuthority
 import secrets
 import pyaes, pbkdf2, binascii, os, secrets
 import ast
+import zlib
+
 
 
 def remoteAttestation(data, iv, encrypt):
     print('OG Data-->', data)
     verified, msg0, msg1, msg2, msg3, msg4 = get_secret_key()
     if encrypt:
+        b = bytes(data, 'utf-8')
+        data = zlib.compress(b, 4)
+        print('Compressed data-->', data)
         encrypted_data, iv = Enclave.encrypt_data(data)
         print('Encrypted Data-->', encrypted_data)
         return verified, encrypted_data, iv
     else: 
         decrypted_data = Enclave.decrypt_data(binascii.unhexlify(data), iv)
         print('Decrypted Data-->', decrypted_data)
-        return verified, ast.literal_eval(decrypted_data.decode("utf-8")), iv
+        decompressed_decrypted_data = zlib.decompress(decrypted_data)
+        print('Decompressed Data-->', decompressed_decrypted_data)
+        return verified, ast.literal_eval(decompressed_decrypted_data.decode("utf-8")), iv
 
 
 
@@ -124,3 +131,7 @@ class Quote:
     def sgx_ra_get_msg3_trusted(proc_msg2, msg2):
         return secrets.token_urlsafe(40)
 
+
+verified, encrypted_data, iv = remoteAttestation('[45, 46]', '', True)
+verified, decompressed_decrypted_data, iv = remoteAttestation(encrypted_data, iv, False)
+print('Final Data', decompressed_decrypted_data)
