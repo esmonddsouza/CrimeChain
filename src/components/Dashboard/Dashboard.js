@@ -18,6 +18,12 @@ class Dashboard extends Component {
     await this.loadBlockchainData()
   }
 
+  // async componentDidUpdate() {
+  //   if (this.state.getTransactionId){
+  //     await this.loadTransactionDetails()
+  //   }
+  // }
+
   async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
@@ -31,6 +37,18 @@ class Dashboard extends Component {
     }
   }
 
+  async loadTransactionDetails() {
+    const web3 = window.web3
+    // Load account
+    const blockNumber = await web3.eth.getBlockNumber()
+    const block = await web3.eth.getBlock(blockNumber)
+    this.setState({ 
+      transactionId: block.transactions[0],
+      getTransactionId: false
+    })
+    console.log('transactionId-->', this.state.transactionId)
+
+  }
 
   async loadBlockchainData() {
     const web3 = window.web3
@@ -48,6 +66,14 @@ class Dashboard extends Component {
       this.setState({ 
         allowed: accountAllowed
       })
+      if (accountAllowed) {
+        const accountDetails = await rbacContract.methods.getRoleDetails(accounts[0].toString(), 'RW').call()
+        this.setState({ 
+          assigningAccount: accountDetails[0],
+          stationId : accountDetails[1]
+        })
+        console.log('accountDetails', accountDetails[0], ' ', accountDetails[1])
+      }
       console.log('Allowed? ', accountAllowed)
       const contract = web3.eth.Contract(Crime.abi, crimeNetworkData.address)
       this.setState({ contract })
@@ -85,6 +111,7 @@ class Dashboard extends Component {
     super(props)
     this.state = {
       ipfsHash: '',
+      newIpfsHash: '',
       ipfsLink: '',
       contract: null,
       web3: null,
@@ -107,7 +134,11 @@ class Dashboard extends Component {
       encryptedData: '',
       decryptedData: '',
       fileName: '',
-      previousFileName: ''
+      previousFileName: '',
+      assigningAccount: '',
+      stationId : '',
+      transactionId: '',
+      getTransactionId: true
     }
     this.encryptData = this.encryptData.bind(this)
     this.fetchFile = this.fetchFile.bind(this)
@@ -126,7 +157,6 @@ class Dashboard extends Component {
         fileName: file.name
       })
       console.log('buffer', this.state.buffer)
-      //console.log(this.state)
     }
   }
   
@@ -199,6 +229,7 @@ class Dashboard extends Component {
     .then(response => {
         if(response){ 
           console.log(response)
+          this.logEvent(this.state.ipfsHash, 'D')
           const data = response['data']
           const buf = Buffer.from(data); 
           this.setState({
@@ -206,7 +237,6 @@ class Dashboard extends Component {
           })
           console.log(buf) 
           console.log("Downloading File...")
-          // buf.toString('binary')
           var file = new File([buf], this.state.previousFileName)
           console.log('File-->', file)
           let url = window.URL.createObjectURL(file)
@@ -228,14 +258,45 @@ class Dashboard extends Component {
         console.error(error)
         return
       }
-      this.state.contract.methods.setCase(result[0].hash, this.state.name, this.state.address, this.state.selectedCaseType, this.state.selectedCaseStatus,
-        this.state.selectedConnectionType, '').send({ from: this.state.account }).then((r) => {
-        console.log('Logs-->', result.logs[0])
-        return this.setState({ ipfsHash: result[0].hash })
-      })
+      else {
+        this.setState({
+          newIpfsHash : result[0].hash
+        })
+      }
+      const response = this.state.contract.methods.setCase(result[0].hash, this.state.name, this.state.address, this.state.selectedCaseType, this.state.selectedCaseStatus,
+        this.state.selectedConnectionType, '').send({ from: this.state.account })
+      this.logEvent(result[0].hash, 'E')
     })
   }
 
+  logEvent(ipfsHash, action){
+    const data = {
+      "userId": '1234',
+      "accountId": this.state.account,
+      "assigningAccountId": this.state.assigningAccount,
+      "ipfsHash": ipfsHash,
+      "dataTime": Math.round(new Date().getTime()/1000),
+      "policeStationId": this.state.stationId,
+      "action": action
+    }
+    console.log('Logging event...')
+    fetch('http://localhost:8000/logger/eventLogger', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        console.log('Event logged')
+      }
+      else {
+        console.log('There was a problem while logging the event.')
+      }
+    })
+
+  }
 
   onSubmit = (event) => {
     event.preventDefault()
@@ -376,7 +437,7 @@ class Dashboard extends Component {
             <div className="row">
               <main role="main" className="col-lg-12 d-flex text-center">
                 <div className="content mr-auto ml-auto">
-                  This account is not allowed to create any cases <br/><br/>
+                  <h2>This account is not allowed to create any cases</h2> <br/><br/>
 
                   <b>Previous Case Details</b><br/>
                     Name: {this.state.previousCaseName} &nbsp; &nbsp; <br/>

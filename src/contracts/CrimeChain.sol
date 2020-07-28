@@ -15,7 +15,7 @@ contract CrimeChain {
     Case newCase;
 
     function setCase(string memory _fileHash, string memory _name, string memory _caseAddress, string memory _caseType, string memory _caseStatus,
-        string memory _connectionType, string memory _date) public {
+        string memory _connectionType, string memory _date) public{
         newCase = Case(_fileHash, _name, _caseAddress, _caseType, _caseStatus, _connectionType, _date);
     }
 
