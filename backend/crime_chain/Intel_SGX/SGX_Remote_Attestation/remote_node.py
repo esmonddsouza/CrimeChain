@@ -11,7 +11,7 @@ def remoteAttestation(data, iv, encrypt):
     verified, msg0, msg1, msg2, msg3, msg4 = get_secret_key()
     if encrypt:
         b = bytes(data, 'utf-8')
-        data = zlib.compress(b, 4)
+        data = zlib.compress(b, 9)
         print('Compressed data-->', data)
         encrypted_data, iv = Enclave.encrypt_data(data)
         print('Encrypted Data-->', encrypted_data)

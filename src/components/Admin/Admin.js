@@ -65,10 +65,14 @@ class Admin extends Component {
     createRolesObject(roles){
         const accounts = roles[0]
         const accountRoles = roles[1]
+        const assigningAccounts = roles[2]
+        const timestamps = roles[3]
+        const stationIds = roles[4]
         var i;
         var previousRoles = []
         for (i=0; i<accountRoles.length; i++){
-            var previousRole = {accountId : accounts[i], role : accountRoles[i], selected : false}
+            var previousRole = {accountId : accounts[i], role : accountRoles[i], assigningAccount: assigningAccounts[i],
+                 timestamp: new Date(timestamps[i] * 1000).toGMTString(), selected : false, stationId : stationIds[i]}
             previousRoles.push(previousRole)
         }
         this.setState({
@@ -103,7 +107,8 @@ class Admin extends Component {
 
     addRole = (event) => {
         event.preventDefault()
-        this.state.contract.methods.addRole(this.state.selectedRole, this.state.accountId).send({ from: this.state.adminAccount }).then((r) => {
+        console.log(new Date().getTime())
+        this.state.contract.methods.addRole(this.state.selectedRole, this.state.accountId, this.state.adminAccount, Math.round(new Date().getTime()/1000), this.state.stationId).send({ from: this.state.adminAccount }).then((r) => {
             console.log('Role Added-->')
         })
     }
@@ -170,12 +175,14 @@ class Admin extends Component {
                                     <th>Selected</th>
                                     <th>Account Id</th>
                                     <th>Role Assigned</th>
+                                    <th>Station Id</th>
                                 </tr>
                                 {this.state.roles.map((role, index) => (
                                     <tr>
                                         <td><input type="checkbox" value={index} default={role.selected} onChange={this.handleSelection}/></td>
                                         <td>{role.accountId}</td>
                                         <td>{role.role}</td>
+                                        <td>{role.stationId}</td>
                                   </tr>
                                 ))}
                             </table>
