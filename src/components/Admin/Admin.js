@@ -111,6 +111,7 @@ class Admin extends Component {
         this.state.contract.methods.addRole(this.state.selectedRole, this.state.accountId, this.state.adminAccount, Math.round(new Date().getTime()/1000), this.state.stationId).send({ from: this.state.adminAccount }).then((r) => {
             console.log('Role Added-->')
         })
+        this.logEvent(this.state.accountId, this.state.selectedRole, this.state.stationId, 'A')
     }
 
     handleSelection = (event) => {
@@ -127,14 +128,50 @@ class Admin extends Component {
     removeRoles = (event) => {
         event.preventDefault()
         const currentRoles = this.state.roles
-        const indicestoBeRemoved = []
+        var indextoBeRemoved = '';
+        var selectedRoleStationId = ''
+        var linkedAccount = ''
+        var role = ''
         for(var i=0; i<currentRoles.length; i++){
-            if(currentRoles[i].selected)
-                indicestoBeRemoved.push(i);
+            if(currentRoles[i].selected){
+                indextoBeRemoved = i;
+                selectedRoleStationId = currentRoles[i].stationId;
+                linkedAccount = currentRoles[i].accountId
+                role = currentRoles[i].role
+                break;
+            }
         }
-        console.log(indicestoBeRemoved);
-        this.state.contract.methods.removeRole(indicestoBeRemoved[0]).send({ from: this.state.adminAccount }).then((r) => {
+        this.state.contract.methods.removeRole(indextoBeRemoved).send({ from: this.state.adminAccount }).then((r) => {
             console.log('Role Removed-->')
+        })
+        this.logEvent(linkedAccount, role, selectedRoleStationId, 'R')
+    }
+
+    logEvent(linkedAccount, role, policeStationId, action){
+        const data = {
+          "userId": '1234',
+          "adminAccountId": this.state.adminAccount,
+          "linkedAccountId": linkedAccount,
+          "role": role,
+          "dataTime": Math.round(new Date().getTime()/1000),
+          "policeStationId": policeStationId,
+          "action": action
+        }
+        console.log('Logging event...')
+        fetch('http://localhost:8000/logger/roleAssignmentLogger', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => {
+          if (response.status === 200) {
+            console.log('Event logged')
+          }
+          else {
+            console.log('There was a problem while logging the event.')
+          }
         })
     }
 

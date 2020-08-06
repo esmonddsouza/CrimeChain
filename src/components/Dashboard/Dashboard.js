@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import { Button } from 'react-bootstrap';
 import Crime from '../../abis/CrimeChain.json'
 import RBAC from '../../abis/RBAC.json'
-import {RadioGroup, Radio} from 'react-radio-group'
+import { RadioGroup, Radio } from 'react-radio-group'
 import { Link } from 'react-router-dom';
 
 
@@ -18,12 +18,6 @@ class Dashboard extends Component {
     await this.loadBlockchainData()
   }
 
-  // async componentDidUpdate() {
-  //   if (this.state.getTransactionId){
-  //     await this.loadTransactionDetails()
-  //   }
-  // }
-
   async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
@@ -35,19 +29,6 @@ class Dashboard extends Component {
     else {
       window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
     }
-  }
-
-  async loadTransactionDetails() {
-    const web3 = window.web3
-    // Load account
-    const blockNumber = await web3.eth.getBlockNumber()
-    const block = await web3.eth.getBlock(blockNumber)
-    this.setState({ 
-      transactionId: block.transactions[0],
-      getTransactionId: false
-    })
-    console.log('transactionId-->', this.state.transactionId)
-
   }
 
   async loadBlockchainData() {
@@ -72,7 +53,6 @@ class Dashboard extends Component {
           assigningAccount: accountDetails[0],
           stationId : accountDetails[1]
         })
-        console.log('accountDetails', accountDetails[0], ' ', accountDetails[1])
       }
       console.log('Allowed? ', accountAllowed)
       const contract = web3.eth.Contract(Crime.abi, crimeNetworkData.address)
@@ -136,9 +116,7 @@ class Dashboard extends Component {
       fileName: '',
       previousFileName: '',
       assigningAccount: '',
-      stationId : '',
-      transactionId: '',
-      getTransactionId: true
+      stationId : ''
     }
     this.encryptData = this.encryptData.bind(this)
     this.fetchFile = this.fetchFile.bind(this)
@@ -235,7 +213,7 @@ class Dashboard extends Component {
           this.setState({
             decryptedData : buf
           })
-          console.log(buf) 
+          console.log(buf)
           console.log("Downloading File...")
           var file = new File([buf], this.state.previousFileName)
           console.log('File-->', file)
@@ -246,7 +224,6 @@ class Dashboard extends Component {
 					a.click();
         }
     })
-    
   }
 
   submitDataToIPFSAndBlockchain(){
@@ -295,7 +272,6 @@ class Dashboard extends Component {
         console.log('There was a problem while logging the event.')
       }
     })
-
   }
 
   onSubmit = (event) => {
@@ -361,7 +337,6 @@ class Dashboard extends Component {
                   <form onSubmit={this.onSubmit} >
                     Name: <input type='text' onBlur={this.captureName}/> <br/><br/>
                     Address: <input type='text' onBlur={this.captureAddress}/> <br/><br/>
-                    {/* Date: <input type='date' onBlur={this.captureDate}/> <br/><br/> */}
                     
                     Connection Type: 
                     <RadioGroup name="Conection Type" selectedValue={this.state.selectedConnectionType} onChange={this.onConnectionTypeChange} label="Connection TYpe">
@@ -412,8 +387,7 @@ class Dashboard extends Component {
                     {this.state.ipfsHash}
                   </a>
                   <br/><br/>
-                    <input type='button' value="Decrypt File" onClick={this.fetchFile}/>
-                  
+                    <input type='button' value="Decrypt File" onClick={this.fetchFile}/>       
                   </form>
                 </div>
               </main>
